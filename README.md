@@ -1,0 +1,2 @@
+# ainote
+AI note
