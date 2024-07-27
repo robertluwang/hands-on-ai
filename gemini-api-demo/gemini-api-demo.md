@@ -1,6 +1,6 @@
 # Gemini API demo
 
-## install api
+## Install api
 
 
 ```python
@@ -36,7 +36,7 @@ print(response.text)
     
 
 
-## list models
+## List models
 
 
 ```python
@@ -59,7 +59,7 @@ for m in genai.list_models():
     models/gemini-1.5-flash
 
 
-## markdown output
+## Output markdown
 
 
 ```python
@@ -244,7 +244,7 @@ display(to_markdown(response.text))
 
 
 
-## response feedback
+## Prompt feedback
 seems combined in candidates ?
 
 
@@ -314,7 +314,7 @@ response
 
 
 
-## response candidates
+## Response candidates
 
 
 ```python
@@ -352,7 +352,7 @@ response.candidates
 
 
 
-## response streaming
+## Response streaming
 
 
 ```python
@@ -452,7 +452,7 @@ response.prompt_feedback
 
 
 
-## generate text from image and text inputs
+## Generate text from image and text inputs
 
 
 ```python
@@ -526,6 +526,8 @@ to_markdown(response.text)
 
 
 
+
+## chat
 
 
 ```python
@@ -657,7 +659,7 @@ for message in chat.history:
 
 
 
-## count token
+## Count token
 
 
 ```python
@@ -683,7 +685,7 @@ model.count_tokens(chat.history)
 
 
 
-## embeddings
+## Embeddings
 With Gemini, you can represent text (words, sentences, and blocks of text) in a vectorized form, making it easier to compare and contrast embeddings.
 
 
