@@ -1,2 +1,2 @@
 # hands-on AI
-AI note - news, trends, tech stack, tools, use cases etc 
+AI ML related dev stack, tools, demo etc.
