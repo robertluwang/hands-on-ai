@@ -72,9 +72,9 @@ img
 
 
 
-    
+​    
 ![png](output_12_1.png)
-    
+​    
 
 
 
@@ -94,7 +94,7 @@ The pages of the PDF file are each passed to the model as a screenshot of the pa
 
 
 ```python
-model.count_tokens([pdffile, "Can you summarize this file for me?"])
+model.count_tokens([pdffile, "please summarize the file"])
 ```
 
 
@@ -107,7 +107,7 @@ model.count_tokens([pdffile, "Can you summarize this file for me?"])
 
 ```python
 response = model.generate_content(
-    [pdffile, '\n\nCan you summarize this file as a bulleted list?']
+    [pdffile, '\n\nplease summarize file as a bulleted list around 10 most important points']
 )
 ```
 
@@ -120,22 +120,16 @@ Markdown(response.text)
 
 
 
-Here is a summary of the file as a bulleted list:
+Here are the 10 most important points from the Gemini 1.5 paper:
 
-- **Gemini 1.5 Pro** is a highly compute-efficient multimodal mixture-of-experts model that is capable of recalling and reasoning over fine-grained information from millions of tokens of context, including multiple long documents and hours of video and audio. 
-- Gemini 1.5 Pro achieves near-perfect recall on long-context retrieval tasks across modalities, improves the state-of-the-art in long-document QA, long-video QA and long-context ASR, and matches or surpasses Gemini 1.0 Ultra's state-of-the-art performance across a broad set of benchmarks.
-- Gemini 1.5 Pro greatly surpasses Gemini 1.0 Pro, performing better on the vast majority of benchmarks, increasing the margin in particular for Math, Science and Reasoning, Multilinguality, Video Understanding, Image Understanding, and Code. 
-- Gemini 1.5 Pro is able to handle extremely long-context tasks, such as long-document QA from 700k-word material and long-video QA from 40 to 105 minutes long videos. 
-- Gemini 1.5 Pro is able to use in-context learning to translate from English to Kalamang, an extremely low-resource language with fewer than 200 speakers, solely by providing a grammar manual in its context at inference time.
-- Gemini 1.5 Pro is able to perform well on various tasks like code generation, math and science reasoning, instruction following, and image and video understanding.
-- Gemini 1.5 Pro is consistently performing better than previous models, and is able to achieve results comparable to human performance on some tasks, such as translating a new language from a single book.
-- Gemini 1.5 Pro is trained and evaluated in a responsible manner, and Google has put in place several mitigation efforts to address potential risks and harms associated with the model.
-- The long-context capabilities of Gemini 1.5 Pro are still under development, and there is a need for new and improved benchmarks that can adequately test the model's abilities. 
+- **Gemini 1.5 Pro is a highly compute-efficient multimodal mixture-of-experts model capable of recalling and reasoning over fine-grained information from millions of tokens of context.** This includes long documents, hours of video, and days of audio.
+- **Gemini 1.5 Pro achieves near-perfect recall on long-context retrieval tasks across modalities, and improves the state-of-the-art in long-document QA, long-video QA, and long-context ASR.**
+- **Gemini 1.5 Pro pushes the boundary of efficiency, reasoning, and long-context performance.** It handles up to 10M tokens, a significant leap over existing models.
+- **Gemini 1.5 Pro can learn to translate English to Kalamang, a language with fewer than 200 speakers worldwide.** This highlights the surprising new capabilities of large language models at the frontier.
+- **Gemini 1.5 Pro greatly surpasses Gemini 1.0 Pro on the vast majority of benchmarks, and also performs at a similar level to 1.0 Ultra on a wide array of benchmarks.**
+- **Gemini 1.5 Pro has strong long-context capabilities that are demonstrably effective for a range of tasks.** This includes text, video, and audio, as well as realistic applications like long-document QA and in-context learning.
+- **Gemini 1.5 Pro demonstrates improved safety performance compared to its predecessors.** This includes mitigating harmful content, representational harms, and memorization.
+- **Gemini 1.5 Pro exhibits a high level of proficiency in core text capabilities, such as math, science, and reasoning.** It also excels in coding, multilinguality, and instruction following.
+- **Gemini 1.5 Pro exhibits a high level of proficiency in core vision and audio capabilities.** This includes image understanding, video understanding, and speech recognition.
+- **Gemini 1.5 Pro is being deployed responsibly.** Google is committed to a structured approach to responsible deployment that includes impact assessment, evaluation, mitigation, and deployment.
 
-
-
-
-
-```python
-
-```
