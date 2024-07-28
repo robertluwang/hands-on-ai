@@ -1,4 +1,4 @@
-## setup
+## Setup API key
 
 
 ```python
@@ -9,12 +9,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-#genai.configure(api_key=os.environ["API_KEY"])
 genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 ```
+
+    The history saving thread hit an unexpected error (OperationalError('attempt to write a readonly database')).History will not be written to the database.
+
 
 
 ```python
