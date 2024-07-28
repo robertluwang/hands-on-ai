@@ -42,29 +42,8 @@ genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
 ```python
 !pwd
-!ls -ltr
+!ls -ltr | grep mp3
 ```
-
-    /mnt/c/dclab/dev/ai-ml/gemini-api
-    total 288484
-    -rwxrwxrwx 1 oldhorse oldhorse 238090979 Jun 10 23:00 GreatRedSpot.mp4
-    -rwxrwxrwx 1 oldhorse oldhorse    119228 Jul 27 13:51 image.jpg
-    -rwxrwxrwx 1 oldhorse oldhorse    462357 Jul 27 14:14 output_26_0.png
-    -rwxrwxrwx 1 oldhorse oldhorse     73641 Jul 27 14:14 output_26_0.jpg
-    -rwxrwxrwx 1 oldhorse oldhorse     37482 Jul 27 14:14 gemini-api-demo.md
-    -rwxrwxrwx 1 oldhorse oldhorse    200325 Jul 27 16:00 image1.jpg
-    -rwxrwxrwx 1 oldhorse oldhorse     74691 Jul 27 16:01 image2.jpg
-    -rwxrwxrwx 1 oldhorse oldhorse    770548 Jul 27 16:09 gemini-api-demo.ipynb
-    -rwxrwxrwx 1 oldhorse oldhorse   2317859 Jul 27 16:17 gemini-text-demo.ipynb
-    -rwxrwxrwx 1 oldhorse oldhorse   1173959 Jul 27 16:53 piranha.jpg
-    -rwxrwxrwx 1 oldhorse oldhorse    547369 Jul 27 16:53 firefighter.jpg
-    -rwxrwxrwx 1 oldhorse oldhorse    357568 Jul 27 17:27 jetpack.jpg
-    -rwxrwxrwx 1 oldhorse oldhorse   9213867 Jul 27 17:49 gemini-vision-demo.ipynb
-    -rwxrwxrwx 1 oldhorse oldhorse    160749 Jul 27 18:05 samplesmall.mp3
-    -rwxrwxrwx 1 oldhorse oldhorse     16277 Jul 27 23:55 gemini-audio-demo.ipynb
-    -rwxrwxrwx 1 oldhorse oldhorse  41762063 Jul 27 23:57 sample.mp3
-
-
 
 ```python
 # Upload the file.
