@@ -86,6 +86,66 @@ Access to neo4j server again, will ask you change password, carefully reset new 
 cypher-shell -a 'neo4j://localhost:7687'
 ```
 
+## Cypher cli demo for neo4j db
+
+```
+cypher-shell -a 'neo4j://localhost:7687'
+
+create node
+neo4j@neo4j> create (:Person {name:'Janet'});
+Added 1 nodes, Set 1 properties, Added 1 labels
+
+neo4j@neo4j> create (:Person {name:'Robert'});
+Added 1 nodes, Set 1 properties, Added 1 labels
+
+update db
+neo4j@neo4j> match (p:Person {name:'Janet'}) set p.age=18;
+Set 1 properties
+
+query db
+neo4j@neo4j> match (p:Person) return p.name,p.age;
++-----------------+
+| p.name  | p.age |
++-----------------+
+| "Robert"   | NULL  |
+| "Janet" | 18    |
++-----------------+
+
+neo4j@neo4j> match (n) return n;
++------------------------------------+
+| n                                  |
++------------------------------------+
+| (:Person {name: "Robert"})            |
+| (:Person {name: "Janet", age: 18}) |
++------------------------------------+
+
+create relationship
+neo4j@neo4j> MATCH (janet:Person {name:'Janet'}), (robert:Person {name:'Robert'})
+             CREATE (janet)-[:KNOWS]->(robert);
+Created 1 relationships
+
+query relationship
+neo4j@neo4j> MATCH (janet:Person {name:'Janet'})-[:KNOWS]->(robert:Person {name:'Robert'})
+             RETURN exists((janet)-[:KNOWS]->(robert)) AS relationship_exists ;
++---------------------+
+| relationship_exists |
++---------------------+
+| TRUE                |
++---------------------+
+
+delete node
+neo4j@neo4j> match (n) detach delete n ;
+Deleted 2 nodes, Deleted 1 relationships
+
+neo4j@neo4j> match (n) return n ;
++---+
+| n |
++---+
+
+```
+
+
+
 ## Install neo4j python driver
 
 
