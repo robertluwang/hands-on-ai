@@ -126,19 +126,6 @@ names
 
 
 
-
-```python
-collection.modify(name="new_test") 
-```
-
-
-```python
-print(collection)
-```
-
-    name='test' id=UUID('81de8271-d3f0-40f0-a9bb-fb709083c40e') metadata=None tenant='default_tenant' database='default_database'
-
-
 ## Add to collection
 
 
