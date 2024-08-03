@@ -14,9 +14,6 @@ Install neo4j server on Ubuntu or WSL2 on windows 10.
 !sudo systemctl enable --now neo4j
 ```
 
-    [sudo] password for oldhorse: 
-    [sudo] password for oldhorse: 
-
 verify neo4j running as service at default localhost,
 
 
