@@ -89,8 +89,6 @@ cypher-shell -a 'neo4j://localhost:7687'
 ## Cypher cli demo for neo4j db
 
 ```
-cypher-shell -a 'neo4j://localhost:7687'
-
 create node
 neo4j@neo4j> create (:Person {name:'Janet'});
 Added 1 nodes, Set 1 properties, Added 1 labels
