@@ -8,8 +8,8 @@ import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 
-def setup_genai():
-    """Set up the Generative AI configuration."""
+def setup_api_key():
+    """Set up the API key for the model."""
     load_dotenv()
     genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
@@ -36,7 +36,7 @@ def get_expert_answer(model: genai.GenerativeModel, user_input: str) -> str:
     return response
 
 def main():
-    setup_genai()
+    setup_api_key()
     
     # Define the system instruction for the expert model
     system_instruction = """
