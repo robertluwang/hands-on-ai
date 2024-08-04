@@ -2,13 +2,13 @@
 
 ## Overview
 
-[Gemini](https://ai.google.dev/models/gemini) - family of generative AI models used to generate content and solve problems; used to handle both text and images as input.
+[Gemini](https://ai.google.dev/models/gemini) - family of generative AI models that lets developers generate content and solve problems. These models are designed and trained to handle both text and images as input.
 
-[LangChain](https://www.langchain.com/) - data framework to integrate with Large Language Models (LLM) like Gemini easier for applications.
+[LangChain](https://www.langchain.com/) - data framework designed to make integration of Large Language Models (LLM) like Gemini easier for applications.
 
-[Chroma](https://docs.trychroma.com/) - open-source embedding database focused on simplicity and productivity; used to store embeddings and metadata, embed documents and queries, and search the embeddings quickly.
+[Chroma](https://docs.trychroma.com/) - open-source embedding database focused on simplicity and developer productivity. Chroma allows users to store embeddings and their metadata, embed documents and queries, and search the embeddings quickly.
 
-Here is demo how to create a RAG application that answers questions using data from a website using Gemini, LangChain, and Chroma.
+Here is demo how to create an application that answers questions using data from a website with the help of Gemini, LangChain, and Chroma.
 
 ## Installation
 
@@ -39,15 +39,15 @@ genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
 ## RAG
 
-When making use of LLMs to answer questions based on private data, need to provide the relevant documents as context alongside your prompt. This is called Retrieval Augmented Generation (RAG).
+If you want to make use of LLMs to answer questions based on private data, you have to provide the relevant documents as context alongside your prompt. This approach is called Retrieval Augmented Generation (RAG).
 
-We can build a RAG app directly using Gemini API; but also can work through Langchain to make life more easier.
+You will use this approach to create a question-answering assistant using the Gemini text model integrated through LangChain. The assistant is expected to answer questions about the Gemini model. To make this possible you will add more context to the assistant using data from a website.
 
-In this demo, we implement the two main components in an RAG-based architecture:
+In this tutorial, you'll implement the two main components in an RAG-based architecture:
 
 1. Retriever
 
-    Based on the user's query, the retriever retrieves relevant snippets that add context from the document (which is website data here)
+    Based on the user's query, the retriever retrieves relevant snippets that add context from the document. In this tutorial, the document is the website data.
 
 2. Generator
 
@@ -69,7 +69,7 @@ from langchain.vectorstores import Chroma
 
 ## Retriever
 
-Perform the following steps:
+In this stage, you will perform the following steps:
 
 - Read and parse the website data using LangChain.
 - Create embeddings of the website data.
@@ -86,7 +86,7 @@ Perform the following steps:
 
 ### Read and parse the website data
 
-What is document format from web loader? - [Langchain WebBaseLoader](https://python.langchain.com/v0.2/docs/integrations/document_loaders/web_base/)
+what is document format from web loader? - [Langchain WebBaseLoader](https://python.langchain.com/v0.2/docs/integrations/document_loaders/web_base/)
 
 
 ```python
@@ -154,7 +154,7 @@ vectorstore = Chroma.from_documents(
 
 ### Create a retriever using Chroma
 
-Create a retriever that can retrieve website data embeddings from the newly created Chroma vector store, it later used to pass embeddings that provide more context to the LLM for answering user's queries.
+You'll now create a retriever that can retrieve website data embeddings from the newly created Chroma vector store. This retriever can be later used to pass embeddings that provide more context to the LLM for answering user's queries.
 
 
 ```python
@@ -170,9 +170,9 @@ print(len(retriever.get_relevant_documents("MMLU")))
 
 ## Generator
 
-The Generator prompts the LLM for an answer when the user asks a question. The retriever created from the Chroma vector store will be used to pass relevant embeddings from the website data to the LLM to provide more context to the user's query.
+The Generator prompts the LLM for an answer when the user asks a question. The retriever you created in the previous stage from the Chroma vector store will be used to pass relevant embeddings from the website data to the LLM to provide more context to the user's query.
 
-Perform the following steps:
+You'll perform the following steps in this stage:
 
 1. Chain together the following:
     * A prompt for extracting the relevant embeddings using the retriever.
@@ -186,7 +186,7 @@ Perform the following steps:
 
 We use **gemini-pro** as it supports text summarization. 
 
-Configure the model parameters such as ***temperature*** or ***top_p***,  by passing the appropriate values when initializing the `ChatGoogleGenerativeAI` LLM. 
+You can configure the model parameters such as ***temperature*** or ***top_p***,  by passing the appropriate values when initializing the `ChatGoogleGenerativeAI` LLM. 
 
 
 ```python
@@ -239,7 +239,7 @@ rag_chain = (
 
 ### Prompt the model
 
-We can now query the LLM by passing any question to the `invoke()` function of the stuff documents chain created previously.
+You can now query the LLM by passing any question to the `invoke()` function of the stuff documents chain you created previously.
 
 
 ```python
@@ -257,3 +257,7 @@ rag_chain.invoke("What is Gemini?")
 
 This article demos a LLM application that answers questions using data from a website with the help of Gemini, LangChain, and Chroma.
 
+
+```python
+
+```
