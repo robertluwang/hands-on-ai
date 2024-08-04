@@ -39,15 +39,15 @@ genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
 ## RAG
 
-when making use of LLMs to answer questions based on private data, need to provide the relevant documents as context alongside your prompt. This is called Retrieval Augmented Generation (RAG).
+When making use of LLMs to answer questions based on private data, need to provide the relevant documents as context alongside your prompt. This is called Retrieval Augmented Generation (RAG).
 
-You can build a RAG app directly using Gemini API; also can work through Langchain.
+We can build a RAG app directly using Gemini API; but also can work through Langchain to make life more easier.
 
-In this demo, will implement the two main components in an RAG-based architecture:
+In this demo, we implement the two main components in an RAG-based architecture:
 
 1. Retriever
 
-    Based on the user's query, the retriever retrieves relevant snippets that add context from the document which is website data.
+    Based on the user's query, the retriever retrieves relevant snippets that add context from the document (which is website data here)
 
 2. Generator
 
@@ -69,7 +69,7 @@ from langchain.vectorstores import Chroma
 
 ## Retriever
 
-perform the following steps:
+Perform the following steps:
 
 - Read and parse the website data using LangChain.
 - Create embeddings of the website data.
@@ -86,7 +86,7 @@ perform the following steps:
 
 ### Read and parse the website data
 
-what is document format from web loader? - [Langchain WebBaseLoader](https://python.langchain.com/v0.2/docs/integrations/document_loaders/web_base/)
+What is document format from web loader? - [Langchain WebBaseLoader](https://python.langchain.com/v0.2/docs/integrations/document_loaders/web_base/)
 
 
 ```python
@@ -154,7 +154,7 @@ vectorstore = Chroma.from_documents(
 
 ### Create a retriever using Chroma
 
-create a retriever that can retrieve website data embeddings from the newly created Chroma vector store. This retriever can be later used to pass embeddings that provide more context to the LLM for answering user's queries.
+create a retriever that can retrieve website data embeddings from the newly created Chroma vector store, it later used to pass embeddings that provide more context to the LLM for answering user's queries.
 
 
 ```python
@@ -170,9 +170,9 @@ print(len(retriever.get_relevant_documents("MMLU")))
 
 ## Generator
 
-The Generator prompts the LLM for an answer when the user asks a question. The retriever you created in the previous stage from the Chroma vector store will be used to pass relevant embeddings from the website data to the LLM to provide more context to the user's query.
+The Generator prompts the LLM for an answer when the user asks a question. The retriever created from the Chroma vector store will be used to pass relevant embeddings from the website data to the LLM to provide more context to the user's query.
 
-perform the following steps:
+Perform the following steps:
 
 1. Chain together the following:
     * A prompt for extracting the relevant embeddings using the retriever.
