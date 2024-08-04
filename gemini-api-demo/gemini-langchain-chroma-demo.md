@@ -154,7 +154,7 @@ vectorstore = Chroma.from_documents(
 
 ### Create a retriever using Chroma
 
-create a retriever that can retrieve website data embeddings from the newly created Chroma vector store, it later used to pass embeddings that provide more context to the LLM for answering user's queries.
+Create a retriever that can retrieve website data embeddings from the newly created Chroma vector store, it later used to pass embeddings that provide more context to the LLM for answering user's queries.
 
 
 ```python
@@ -186,7 +186,7 @@ Perform the following steps:
 
 We use **gemini-pro** as it supports text summarization. 
 
-configure the model parameters such as ***temperature*** or ***top_p***,  by passing the appropriate values when initializing the `ChatGoogleGenerativeAI` LLM. 
+Configure the model parameters such as ***temperature*** or ***top_p***,  by passing the appropriate values when initializing the `ChatGoogleGenerativeAI` LLM. 
 
 
 ```python
@@ -239,7 +239,7 @@ rag_chain = (
 
 ### Prompt the model
 
-You can now query the LLM by passing any question to the `invoke()` function of the stuff documents chain you created previously.
+We can now query the LLM by passing any question to the `invoke()` function of the stuff documents chain created previously.
 
 
 ```python
@@ -257,7 +257,3 @@ rag_chain.invoke("What is Gemini?")
 
 This article demos a LLM application that answers questions using data from a website with the help of Gemini, LangChain, and Chroma.
 
-
-```python
-
-```
