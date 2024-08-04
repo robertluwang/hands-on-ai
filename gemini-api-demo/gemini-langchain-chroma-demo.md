@@ -332,7 +332,7 @@ to_markdown(rag_chain.invoke("what is docker-server.sh for? show me source code"
 
 
 
-We can see it analyze the code then explain what is doing, also provide completely source code, the only minor issue is output format that is from to_markdown.
+We can see it analyzed the code then explain what is doing, also provide completely source code.
 
 ## Conclusion
 
