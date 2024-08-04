@@ -261,6 +261,36 @@ answer_chain.invoke({"question": "What is the total population?"})
 
 
 
+Another question
+
+
+```python
+answer_prompt = PromptTemplate.from_template(
+    """You are going to receive a original user question, generated SQL query, and result of said query. You should use this information to answer the original question. Use only information provided to you.
+
+Original Question: {question}
+SQL Query: {query}
+SQL Result: {result}
+Answer: """
+)
+
+answer_chain = (
+    RunnablePassthrough.assign(query=validate_chain).assign(
+        result=itemgetter("query") | execute_query
+    )
+    | answer_prompt | llm | StrOutputParser()
+)
+
+answer_chain.invoke({"question": "What is the average of house age? min age and max age?"})
+```
+
+
+
+
+    'The average house age is 28.64 years. The minimum house age is 1 year and the maximum house age is 52 years. \n'
+
+
+
 ## Conclusion
 
 Chatting with an SQL database using the Gemini API and Langchain framework streamlines the process of querying complex datasets. This approach leverages the capabilities of large language models to generate precise SQL queries from natural language prompts, simplifying database interactions. By integrating these tools, users can efficiently retrieve and analyze data without extensive SQL knowledge, making data-driven decision-making more accessible. This demonstration showcases the potential of combining advanced AI models with robust data frameworks to enhance database querying, providing a powerful tool for users across various fields.
