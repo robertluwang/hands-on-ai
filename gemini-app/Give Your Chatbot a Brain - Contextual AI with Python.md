@@ -223,23 +223,26 @@ chatbot.chat_history
 ### Using the Chatbot
 ```python
     def chat(self):
+        n=1 # input number
         print("Welcome to GeminiChatbot! ('/q' to exit)\n")
         self.chat_history.append("Welcome to GeminiChatbot! ('/q' to exit)\n")
         while True:
-            user_input = input("You: ")
-            self.chat_history.append(f"You: {user_input}\n")
+            user_input = input(f"{n} You: ")
+            self.chat_history.append(f"{n} You: {user_input}\n")
                       
             if user_input.lower() == "/q":
-                self.log_chat_history()
+                self.log_chat_history('./log')
                 print("Chat history saved. Exiting.")
                 break
             response = self.generate_response(user_input)
-            print(f"Chatbot: {response}")
-            self.chat_history.append(f"Chatbot: {response}")
+            print(f"{n} Chatbot: {response}")
+            self.chat_history.append(f"{n} Chatbot: {response}")
+            n += 1
 ```
 The chat function is main chatbot to end user:
 * It enters a loop to continuously prompt the user for input.
 * The chatbot generates responses based on the user's input and the chat history.
+* Using input number to track conversation.
 * When the user enters "/q", the chat history is logged and the program exits.
 
 ### Complete gemini chatbot app
