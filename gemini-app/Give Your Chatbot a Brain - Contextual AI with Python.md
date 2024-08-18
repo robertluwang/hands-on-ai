@@ -245,7 +245,7 @@ The chat function is main chatbot to end user:
 * Using input number to track conversation.
 * When the user enters "/q", the chat history is logged and the program exits.
 
-### Complete gemini chatbot app
+## Complete gemini chatbot app
 ```python
 import google.generativeai as genai
 import os
@@ -364,7 +364,7 @@ chatbot.chat_history
      '10 You: /q\n']
 ```
 
-### Change chatbot instance
+## Change chatbot instance
 ```python
 chatbot = GeminiChatbot()
 chatbot.envpath = "/mnt/c/dclab/dev/ai-ml"
