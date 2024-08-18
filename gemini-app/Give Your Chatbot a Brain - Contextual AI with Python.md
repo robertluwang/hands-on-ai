@@ -8,7 +8,7 @@ The most of popular LLM already supports contextual chatbot by including chat hi
 This tutorial will guide you through building a secure and contextual Gemini chatbot using Python. We'll leverage the power of Google's generative AI library (google.generativeai) to create chat sessions that chatbot will remember. By incorporating memory into your chatbot, you'll design a more engaging and helpful experience.
 
 
-## Gemini chat hostory demo
+## Gemini chat history demo
 
 
 ```python
@@ -44,7 +44,7 @@ print(response.text)
 response = chat.send_message('tell me another joke about AI')
 print(response.text)
 ```
-
+```
     Why did the AI get fired from its job at the library? 
     
     Because it was always getting lost in the stacks! 📚🤖 
@@ -52,14 +52,12 @@ print(response.text)
     Why did the AI cross the road? 
     
     To get to the other *side* of the algorithm! 🤖 
-    
-
-
+```
 
 ```python
 print(chat.history)
 ```
-
+```
     [parts {
       text: "tell me a joke about AI"
     }
@@ -77,7 +75,7 @@ print(chat.history)
     }
     role: "model"
     ]
-
+```
 
 From below test, we can see Gemini has memory of previous conversatoin.
 
@@ -87,7 +85,7 @@ response = chat.send_message('what was 1st joke you told me?')
 
 print(response.text) 
 ```
-
+```
     You're right! I'm still under development, and I sometimes forget things like past conversations.  
     
     The first joke I told you was: 
@@ -95,7 +93,7 @@ print(response.text)
     "Why did the AI get fired from its job at the library? Because it was always getting lost in the stacks!" 📚🤖 
     
     Let me know if you'd like to hear another one! 😄 
-    
+```
 
 
 
@@ -103,7 +101,7 @@ print(response.text)
 for part in (chat.history):
     print(part.parts[0])
 ```
-
+```
     text: "tell me a joke about AI"
     
     text: "Why did the AI get fired from its job at the library? \n\nBecause it was always getting lost in the stacks! 📚🤖 \n"
@@ -115,10 +113,10 @@ for part in (chat.history):
     text: "what was 1st joke you told me?"
     
     text: "You\'re right! I\'m still under development, and I sometimes forget things like past conversations.  \n\nThe first joke I told you was: \n\n\"Why did the AI get fired from its job at the library? Because it was always getting lost in the stacks!\" 📚🤖 \n\nLet me know if you\'d like to hear another one! 😄 \n"
-    
+```
 
 
-Let's create chat history feature without using default Gemini history[], this concept and approach will aplly for any LLM.
+Let's create chat history feature without using default Gemini history[], this concept and approach will apply for any LLM.
 
 ## Building the Chatbot Class
 
@@ -169,13 +167,13 @@ chatbot.chat_history.append(f"Chatbot: {response.text}")
 print(response.text)
 print(chatbot.chat_history)
 ```
-
+```
     Why did the AI get fired from the dating app?
     
     Because it couldn't tell the difference between a "like" and a "dislike," and kept matching people with their worst enemies! 
     
     ['You: tell a joke about AI', 'Chatbot: Why did the AI get fired from the dating app?\n\nBecause it couldn\'t tell the difference between a "like" and a "dislike," and kept matching people with their worst enemies! \n']
-
+```
 
 ### Generating Response
 
@@ -225,11 +223,11 @@ response = chatbot.generate_response(user_input)
 chatbot.chat_history.append(f"Chatbot: {response}")
 print(response)
 ```
-
+```
     Why did the AI cross the road? 
     
     To get to the other *side* of the algorithm! 
-    
+```
 
 
 
@@ -240,22 +238,22 @@ response = chatbot.generate_response(user_input)
 chatbot.chat_history.append(f"Chatbot: {response}")
 print(response)
 ```
-
+```
     The joke I told you was:
     
     Why did the AI cross the road? 
     
     To get to the other *side* of the algorithm! 
-    
+```
 
 
 
 ```python
 print(chatbot.chat_history)
 ```
-
+```
     ['You: tell a joke about AI', 'Chatbot: Why did the AI cross the road? \n\nTo get to the other *side* of the algorithm! \n', 'You: what was joke you told me?', 'Chatbot: The joke I told you was:\n\nWhy did the AI cross the road? \n\nTo get to the other *side* of the algorithm! \n']
-
+```
 
 ### Logging Chat History
 
@@ -332,7 +330,7 @@ print(response)
 
 chatbot.log_chat_history('./log')
 ```
-
+```
     Why did the AI cross the road? 
     
     To get to the other *side* of the algorithm! 
@@ -344,23 +342,21 @@ chatbot.log_chat_history('./log')
     And I answered: "To get to the other *side* of the algorithm!" 
     
     chat log file: ./log/chat-log-2024-08-18_12-54-43.txt
-
+```
 
 
 ```python
 chatbot.chat_history
 ```
 
-
-
-
+```
     ['You: tell a joke about AI',
      'Chatbot: Why did the AI cross the road? \n\nTo get to the other *side* of the algorithm! \n',
      'You: how are you today?',
      "Chatbot: I'm doing well, thank you for asking! How about you? 😊 \n",
      'You: what was joke you told me?',
      'Chatbot: You asked: "Why did the AI cross the road?" \n\nAnd I answered: "To get to the other *side* of the algorithm!" \n']
-
+```
 
 
 ### Using the Chatbot
@@ -459,93 +455,37 @@ if __name__ == "__main__":
 
 
 ```
-
+```
     Welcome to GeminiChatbot! ('/q' to exit)
-    
-
-
     1 You:  hello
-
-
     1 Chatbot: Hello! 👋 How can I help you today? 
-    
-
-
     2 You:  how are you?
-
-
     2 Chatbot: I'm doing well, thank you for asking! How can I help you today? 😊 
-    
-
-
     3 You:  tell me a joke
-
-
     3 Chatbot: Why don't scientists trust atoms?
-    
     Because they make up everything! 
-    
-
-
     4 You:  tell me another joke
-
-
     4 Chatbot: Why don't they play poker in the jungle? 
-    
     Too many cheetahs! 🐆 
-    
-
-
     5 You:  what was 1st joke?
-
-
     5 Chatbot: The first joke was:  "Why don't scientists trust atoms? Because they make up everything!" 
-    
-
-
     6 You:  what was 2nd joke?
-
-
     6 Chatbot: The second joke was: "Why don't they play poker in the jungle? Too many cheetahs!" 🐆 
-    
-
-
     7 You:  what was 1st word I said?
-
-
     7 Chatbot: The first word you said was "hello". 
-    
-
-
     8 You:  what was 2nd word I said?
-
-
     8 Chatbot: The second word you said was "how". 
-    
-
-
     9 You:  what was 2nd question I asked?
-
-
     9 Chatbot: The second question you asked was "how are you?" 
-    
-
-
     10 You:  /q
-
-
     chat log file: ./log/chat-log-2024-08-18_12-41-13.txt
     Chat history saved. Exiting.
-
-
+```
 
 ```python
 chatbot.chat_history
 ```
-
-
-
-
+```
     ["Welcome to GeminiChatbot! ('/q' to exit)\n",
      '1 You: hello\n',
      '1 Chatbot: Hello! 👋 How can I help you today? \n',
@@ -566,8 +506,7 @@ chatbot.chat_history
      '9 You: what was 2nd question I asked?\n',
      '9 Chatbot: The second question you asked was "how are you?" \n',
      '10 You: /q\n']
-
-
+```
 
 ### Change chatbot instance
 
@@ -578,72 +517,30 @@ chatbot.envpath = "/mnt/c/dclab/dev/ai-ml"
 chatbot.modelname = "gemini-1.5-pro"
 chatbot.chat()
 ```
-
+```
     Welcome to GeminiChatbot! ('/q' to exit)
-    
-
-
     1 You:  hello
-
-
     1 Chatbot: Hello! 👋 How can I help you today? 😊 
-    
-
-
     2 You:  tell me a joke
-
-
     2 Chatbot: Why don't scientists trust atoms? 
-    
     Because they make up everything! 
-    
-
-
     3 You:  tell me another joke
-
-
     3 Chatbot: Why don't they play poker in the jungle? 
-    
     Too many cheetahs! 🐆 
-    
-
-
     4 You:  what was 1st joke?
-
-
     4 Chatbot: The first joke was: 
-    
     Why don't scientists trust atoms? 
-    
     Because they make up everything! 
-    
-
-
     5 You:  what was 2nd joke?
-
-
     5 Chatbot: The second joke was:
-    
     Why don't they play poker in the jungle? 
-    
     Too many cheetahs! 🐆 
-    
-
-
     6 You:  what was 1st word I said?
-
-
     6 Chatbot: The first word you said was "hello". 
-    
-
-
     7 You:  /q
-
-
     chat log file: ./log/chat-log-2024-08-18_12-42-19.txt
     Chat history saved. Exiting.
-
-
+```
 
 ```python
 chatbot.chat_history
@@ -655,7 +552,3 @@ Why is memory so important for chatbots? Just like real conversations, rememberi
 
 By following these steps and using the google.generativeai library, you can create a robust and contextual Gemini chatbot that users will enjoy interacting with. Remember to replace 'YOUR_API_KEY' with your actual Gemini API key in the .env file. With this foundation, you can extend your chatbot's capabilities and create truly memorable chat experiences.
 
-
-```python
-
-```
