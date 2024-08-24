@@ -283,52 +283,12 @@ db.get(include=['embeddings', 'documents', 'metadatas'])['embeddings']
 ```python
 pd.DataFrame(db.peek(3))
 ```
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>ids</th>
-      <th>embeddings</th>
-      <th>metadatas</th>
-      <th>documents</th>
-      <th>uris</th>
-      <th>data</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>[0.04447142407298088, -0.052165351808071136, -...</td>
-      <td>None</td>
-      <td>Gemini is the result of large-scale collaborat...</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1</td>
-      <td>[0.05980474501848221, -0.05400879308581352, -0...</td>
-      <td>None</td>
-      <td>We designed Gemini to be natively multimodal, ...</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2</td>
-      <td>[0.017100121825933456, -0.06025487929582596, -...</td>
-      <td>None</td>
-      <td>Gemini has the most comprehensive safety evalu...</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
+```
+	ids	embeddings	metadatas	documents	uris	data
+0	0	[0.04447142407298088, -0.052165351808071136, -...	None	Gemini is the result of large-scale collaborat...	None	None
+1	1	[0.05980474501848221, -0.05400879308581352, -0...	None	We designed Gemini to be natively multimodal, ...	None	None
+2	2	[0.017100121825933456, -0.06025487929582596, -...	None	Gemini has the most comprehensive safety evalu...	None	None
+```
 
 **Getting the relevant document**
 
