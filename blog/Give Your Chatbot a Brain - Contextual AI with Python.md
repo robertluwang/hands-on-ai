@@ -547,3 +547,14 @@ Why is memory so important for chatbots? Just like real conversations, rememberi
 
 By following these steps and using the google.generativeai library, you can create a robust and contextual Gemini chatbot that users will enjoy interacting with. Remember to replace 'GOOGLE_API_KEY' with your actual Gemini API key in the .env file. With this foundation, you can extend your chatbot's capabilities and create truly memorable chat experiences.
 
+## About Me
+Hey! I am Robert Wang, live in Montreal.
+
+More simple and more efficient.
+
+- [GitHub: robertluwang](https://github.com/robertluwang)
+- [Twitter: robertluwang](https://twitter.com/robertluwang)
+- [LinkedIn: robertluwang](https://www.linkedin.com/in/robertluwang/)
+- [Medium: robertluwang](https://medium.com/@robertluwang)
+- [Dev.to: robertluwang](https://dev.to/robertluwang)
+- [Web: dreamcloud.artark.ca](https://dreamcloud.artark.ca/)

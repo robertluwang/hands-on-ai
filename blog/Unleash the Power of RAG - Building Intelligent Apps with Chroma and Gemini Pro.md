@@ -432,7 +432,14 @@ Google has performed the most comprehensive safety evaluations yet for Gemini, i
 
 This blog has demonstrated how Chroma and Gemini Pro can be combined to create a powerful RAG application. By leveraging Chroma's efficient information retrieval capabilities and Gemini Pro's advanced language understanding, we can build intelligent applications that can answer questions, generate creative text formats, and provide informative summaries. As GenAI technology continues to evolve, the potential for building even more sophisticated and user-friendly applications becomes increasingly exciting.
 
+## About Me
+Hey! I am Robert Wang, live in Montreal.
 
-```python
+More simple and more efficient.
 
-```
+- [GitHub: robertluwang](https://github.com/robertluwang)
+- [Twitter: robertluwang](https://twitter.com/robertluwang)
+- [LinkedIn: robertluwang](https://www.linkedin.com/in/robertluwang/)
+- [Medium: robertluwang](https://medium.com/@robertluwang)
+- [Dev.to: robertluwang](https://dev.to/robertluwang)
+- [Web: dreamcloud.artark.ca](https://dreamcloud.artark.ca/)
