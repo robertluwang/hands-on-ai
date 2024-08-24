@@ -1,3 +1,9 @@
+# contextual-gemini-chatbot.py
+# - Generative AI Gemini Chatbot
+# - Contextual chatbot
+# @robertluwang
+# Aug 2024
+
 import google.generativeai as genai
 import os
 import datetime

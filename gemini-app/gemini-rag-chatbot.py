@@ -1,15 +1,8 @@
-# dclib_py/ai/gemini.py
-# Gemini AI tool sets
-# - GeminiChatbot - general gemini chatbot
-# - RAGChatBot - RAG chatbot using ChromaDB
+# gemini-rag-chatbot.py
+# - Generative AI Gemini Chatbot
+# - RAG Chatbot using ChromaDB
 # @robertluwang
 # Aug 2024
-
-import google.generativeai as genai
-from dotenv import load_dotenv
-from os.path import expanduser
-import os
-import datetime
 
 import textwrap
 import chromadb
@@ -17,82 +10,13 @@ import numpy as np
 import pandas as pd
 import datetime
 
+import google.generativeai as genai
+
 from chromadb import Documents, EmbeddingFunction, Embeddings
 
-def api_key(envpath='~', envfile='.env'):
-    if envpath == '~':
-        envpath = os.path.expanduser("~")
-    
-    load_dotenv(os.path.join(envpath, envfile))
-    genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
-    return os.environ["GOOGLE_API_KEY"]
+import os
 
-import pathlib
-import textwrap
-
-from IPython.display import display
-from IPython.display import Markdown
-def to_markdown(text):
-  text = text.replace('•', '  *')
-  return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
-
-def list_models():
-    for m in genai.list_models():
-        if 'generateContent' in m.supported_generation_methods:
-            print(m.name)
-class GeminiChatbot:
-    def __init__(self):
-        # Load the .env file from the home directory
-        self.envpath = '~'
-        self.envfile = '.env'
-
-        if self.envpath == '~':
-            self.envpath = os.path.expanduser("~")
-        
-        load_dotenv(os.path.join(self.envpath, self.envfile))
-
-        genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-
-        self.modelname = "gemini-1.5-flash"
-        self.model = genai.GenerativeModel(self.modelname)
-        
-        self.chat_history = []
-
-    def generate_response(self, prompt):
-        full_prompt = "Please go through chat history below if user ask question regarding on previous conversation.\nPlease anwser question directly if it is not related to previous conversation\n" + "+++chat history\n" + ''.join(self.chat_history) + "+++\n" + "new prompt: " + prompt
-        response = self.model.generate_content(full_prompt)
-        return response.text
-
-    def log_chat_history(self,logpath):
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        log_filename = f"chat-log-{timestamp}.txt"
-        log_path = os.path.join(logpath, log_filename)
-
-        os.makedirs(logpath, exist_ok=True)
-
-        with open(log_path, "w") as f:
-            for message in self.chat_history:
-                f.write(f"{message}\n")
-        
-        print(f"chat log file: {log_path}")
-    
-    def chat(self):
-        n=1 # input number
-        print("Welcome to GeminiChatbot! ('/q' to exit)\n")
-        self.chat_history.append("Welcome to GeminiChatbot! ('/q' to exit)\n")
-        while True:
-            user_input = input(f"{n} You: ")
-            self.chat_history.append(f"{n} You: {user_input}\n")
-                      
-            if user_input.lower() == "/q":
-                self.log_chat_history('./log')
-                print("Chat history saved. Exiting.")
-                break
-            response = self.generate_response(user_input)
-            print(f"{n} Chatbot: {response}")
-            self.chat_history.append(f"{n} Chatbot: {response}")
-            n += 1
-
+from dotenv import load_dotenv
 class GeminiEmbeddingFunction(EmbeddingFunction):
     def __call__(self, input: Documents) -> Embeddings:
         model = 'models/embedding-001'
@@ -235,10 +159,17 @@ class RAGChatBot:
             self.chat_history.append(f"{n} Chatbot: {response.text}")
             n += 1
 
-
 if __name__ == "__main__":
-    chatbot = GeminiChatbot()
-    #chatbot.envpath = '~' 
-    #chatbot.envfile = '.env'
-    #chatbot.modelname = "gemini-1.5-pro"
-    chatbot.chat()
+    ragchatbot = RAGChatBot()
+
+    #ragchatbot.model_name = "gemini-1.5-flash"
+    #ragchatbot.dbname = "geminidb"
+    DOCUMENT1 = "Gemini is the result of large-scale collaborative efforts by teams across Google, including our colleagues at Google Research. It was built from the ground up to be multimodal, which means it can generalize and seamlessly understand, operate across and combine different types of information including text, code, audio, image and video."
+    DOCUMENT2 = "We designed Gemini to be natively multimodal, pre-trained from the start on different modalities. Then we fine-tuned it with additional multimodal data to further refine its effectiveness. This helps Gemini seamlessly understand and reason about all kinds of inputs from the ground up, far better than existing multimodal models — and its capabilities are state of the art in nearly every domain."
+    DOCUMENT3 = "Gemini has the most comprehensive safety evaluations of any Google AI model to date, including for bias and toxicity. We’ve conducted novel research into potential risk areas like cyber-offense, persuasion and autonomy, and have applied Google Research’s best-in-class adversarial testing techniques to help identify critical safety issues in advance of Gemini’s deployment."
+    ragchatbot.documents = [DOCUMENT1, DOCUMENT2, DOCUMENT3]
+    ragchatbot.subject = 'Gemini intro'
+
+    ragchatbot.ragchat()
+
+
