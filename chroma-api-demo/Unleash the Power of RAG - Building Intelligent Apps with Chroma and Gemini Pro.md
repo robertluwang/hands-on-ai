@@ -146,85 +146,17 @@ We define a function that can be used to generate embeddings for a list of docum
 
 
 ```python
-def create_chroma_db(documents, name, embedding_function=GeminiEmbeddingFunction()):
-    """
-    Creates a ChromaDB collection, generates embeddings for the documents using the provided embedding function, and adds the documents and embeddings to the collection.
+def create_chroma_db(documents, name):
+  chroma_client = chromadb.Client()
+  db = chroma_client.create_collection(name=name, embedding_function=GeminiEmbeddingFunction())
 
-    Args:
-        documents (list): A list of documents to be added to the collection.
-        name (str): The name of the collection.
-        embedding_function (EmbeddingFunction, optional): The function used to generate embeddings for the documents. Defaults to GeminiEmbeddingFunction().
-
-    Returns:
-        chromadb.Collection: The created ChromaDB collection.
-    """
-
-    chroma_client = chromadb.Client()
-    db = chroma_client.create_collection(name=name, embedding_function=GeminiEmbeddingFunction())
-
-    # Generate embeddings
-    embeddings = embedding_function(documents)
-    print("Embeddings generated:", embeddings)
-
-    # Verify data types
-    if not isinstance(embeddings, list) or not all(isinstance(embedding, list) for embedding in embeddings):
-        raise ValueError("Embeddings must be a list of lists of numbers.")
-
-    if not all(isinstance(value, (int, float)) for embedding in embeddings for value in embedding):
-        raise ValueError("Embedding elements must be numerical.")
-
-    # Add documents and embeddings
-    try:
-        db.add(
-            documents=documents,
-            embeddings=embeddings,
-            ids=[str(i) for i in range(len(documents))]
-        )
-        print("Documents and embeddings added successfully.")
-    except Exception as e:
-        print(f"Error adding documents and embeddings: {e}")
-
-    return db
+  for i, d in enumerate(documents):
+    db.add(
+      documents=d,
+      ids=str(i)
+    )
+  return db
 ```
-
-The `create_chroma_db` function creates a ChromaDB collection, generates embeddings for a list of documents using a specified embedding function, and adds both the documents and their corresponding embeddings to the collection.
-
-1. **Function Definition:**
-   - `def create_chroma_db(documents, name, embedding_function=GeminiEmbeddingFunction())`:
-     - Defines a function named `create_chroma_db` that takes three arguments:
-       - `documents`: A list of documents to be added to the collection.
-       - `name`: The name to be given to the ChromaDB collection.
-       - `embedding_function`: An optional argument specifying the function used to generate embeddings for the documents. If not provided, `GeminiEmbeddingFunction()` is used by default.
-
-2. **ChromaDB Client and Collection Creation:**
-   - `chroma_client = chromadb.Client()`: Creates an instance of the ChromaDB client.
-   - `db = chroma_client.create_collection(name=name, embedding_function=GeminiEmbeddingFunction())`: Creates a new collection in the ChromaDB database with the specified `name` and uses the provided `embedding_function` to generate embeddings for the documents.
-
-3. **Embedding Generation:**
-   - `embeddings = embedding_function(documents)`: Calls the provided `embedding_function` on the `documents` list to generate embeddings for each document.
-
-4. **Data Type Validation:**
-   - `if not isinstance(embeddings, list) or not all(isinstance(embedding, list) for embedding in embeddings):`: Checks if the `embeddings` are a list of lists.
-   - `if not all(isinstance(value, (int, float)) for embedding in embeddings for value in embedding):`: Checks if all elements within the embeddings are numerical (integers or floats).
-
-5. **Document and Embedding Addition:**
-   - `db.add(documents=documents, embeddings=embeddings, ids=[str(i) for i in range(len(documents))])`: Adds the documents and their corresponding embeddings to the ChromaDB collection. Unique identifiers are generated using a list comprehension for each document.
-
-6. **Error Handling:**
-   - A `try-except` block is used to catch any exceptions that might occur during the process of adding documents and embeddings to the collection.
-
-7. **Collection Return:**
-   - The newly created ChromaDB collection is returned.
-
-**Key Points:**
-
-- The function ensures that the embeddings are generated using the specified `embedding_function`.
-- It validates the data types of the embeddings to ensure they are compatible with ChromaDB.
-- It adds both the documents and their embeddings to the collection, using unique identifiers for each document.
-- It includes error handling to catch potential exceptions during the process.
-
-This function provides a robust and flexible way to create ChromaDB collections with custom embedding functions and data validation.
-
 
 **Setup vector db**
 
@@ -237,6 +169,7 @@ client = chromadb.Client()
 
 
 ```python
+collections = client.list_collections
 client.list_collections()
 ```
 
@@ -249,7 +182,28 @@ client.list_collections()
 
 
 ```python
-client.delete_collection(name="geminidb")
+for collection_name in (collection.name for collection in collections()):
+    print(collection_name.strip())
+```
+
+    geminidb
+
+
+
+```python
+for collection_name in (collection.name for collection in collections()):
+    if collection_name.strip() == "geminidb":
+        print("Collection 'geminidb' exists, will remove it.")
+        client.delete_collection(name="geminidb")
+    else:
+        print("Collection 'geminidb' does not exist.")
+```
+
+    Collection 'geminidb' exists, will remove it.
+
+
+
+```python
 client.list_collections()
 ```
 
@@ -272,6 +226,23 @@ You might find embeddings is None from db.get(). When using get or query you can
 
 ```python
 db.get(include=['embeddings', 'documents', 'metadatas'])
+```
+
+
+```python
+{'ids': ['0', '1', '2'],
+ 'embeddings': [[0.04447142407298088,
+   -0.052165351808071136,
+   -0.061552658677101135,
+......
+   -0.04504038393497467,
+   0.005292229354381561]],
+ 'metadatas': [None, None, None],
+ 'documents': ['Gemini is the result of large-scale collaborative efforts by teams across Google, including our colleagues at Google Research. It was built from the ground up to be multimodal, which means it can generalize and seamlessly understand, operate across and combine different types of information including text, code, audio, image and video.',
+  'We designed Gemini to be natively multimodal, pre-trained from the start on different modalities. Then we fine-tuned it with additional multimodal data to further refine its effectiveness. This helps Gemini seamlessly understand and reason about all kinds of inputs from the ground up, far better than existing multimodal models — and its capabilities are state of the art in nearly every domain.',
+  'Gemini has the most comprehensive safety evaluations of any Google AI model to date, including for bias and toxicity. We’ve conducted novel research into potential risk areas like cyber-offense, persuasion and autonomy, and have applied Google Research’s best-in-class adversarial testing techniques to help identify critical safety issues in advance of Gemini’s deployment.'],
+ 'uris': None,
+ 'data': None}
 ```
 
 
@@ -424,8 +395,204 @@ Markdown(answer.text)
 
 
 
-Google has performed the most comprehensive safety evaluations yet for Gemini, including assessments for bias and toxicity. Google uses advanced methods, including adversarial testing, to help identify possible safety issues before Gemini is released.
+Gemini, a Google AI model, has undergone rigorous safety evaluations to ensure its responsible use. These evaluations encompass a wide range of potential risks, such as bias, toxicity, and even the possibility of misuse for offensive or manipulative purposes. To mitigate these risks, Google Research has employed advanced adversarial testing techniques to identify and address critical safety issues before Gemini's deployment.
 
+
+
+## Build RAG chatbot using Chroma - wraping to class for easy integration 
+
+**GeminiEmbeddingFunction**: This class defines a custom function to generate embeddings for the input documents using Google's generative AI model.
+
+**RAGChatBot**: This class represents the core of the chatbot functionality.
+
+- __init__: Initializes various properties like environment path, database name, list of documents, subject, embedding function, query, passage, model name, model object, chat history, and a ChromaDB client object.
+- create_chroma_db: Creates a ChromaDB collection named geminidb (or deletes an existing one) and adds the provided documents with their IDs.
+- get_relevant_passage: Retrieves the most relevant document (passage) from the ChromaDB collection based on the user's query.
+- make_prompt: Constructs a formatted prompt for the generative model, including the user's question, the retrieved passage, and other information.
+- log_chat_history: Saves the chat history to a text file with a timestamp.
+- ragchat: The main function that drives the chatbot interaction:
+
+**Main Execution**:
+
+- Creates an instance of the RAGChatBot class.
+- Defines sample documents and sets the subject.
+- Assigns the documents and subject to the chatbot instance.
+- Calls the ragchat function on the chatbot instance to initiate the conversation.
+
+We implement a Retrieval-Augmented Generation (RAG) based chatbot that utilizes Google's generative AI model to answer user questions in a comprehensive and informative way, considering relevant information from a provided document set
+
+
+
+```python
+# gemini-rag-chatbot.py
+# - Generative AI Gemini Chatbot
+# - RAG Chatbot using ChromaDB
+# @robertluwang
+# Aug 2024
+
+import textwrap
+import chromadb
+import numpy as np
+import pandas as pd
+import datetime
+
+import google.generativeai as genai
+
+from chromadb import Documents, EmbeddingFunction, Embeddings
+
+import os
+
+from dotenv import load_dotenv
+
+class GeminiEmbeddingFunction(EmbeddingFunction):
+    def __call__(self, input: Documents) -> Embeddings:
+        model = 'models/embedding-001'
+        title = "Custom query"
+        return genai.embed_content(model=model,
+                                   content=input,
+                                   task_type="retrieval_document",
+                                   title=title)["embedding"]
+class RAGChatBot:
+    def __init__(self):
+        self.envpath = '~'
+        self.envfile = '.env'
+
+        if self.envpath == '~':
+            self.envpath = os.path.expanduser("~")
+        
+        load_dotenv(os.path.join(self.envpath, self.envfile))
+
+        genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
+        self.dbname = 'geminidb'
+        self.db = None
+        self.documents = []
+        self.subject = ''
+        self.embedding_function = GeminiEmbeddingFunction()
+        self.query = ''
+        self.passage = ''
+        self.model_name = 'gemini-1.5-flash'
+        self.model = genai.GenerativeModel(self.model_name)
+        self.chat_history = []
+
+        self.chroma_client = chromadb.Client() 
+
+    def create_chroma_db(self):
+        collections = self.chroma_client.list_collections
+        for collection_name in (collection.name for collection in collections()):
+            if collection_name.strip() == self.dbname:
+                #print(f"Collection '{self.dbname}' exists, will remove it.")
+                self.chroma_client.delete_collection(name=self.dbname)
+        
+        self.db = self.chroma_client.create_collection(name=self.dbname, embedding_function=self.embedding_function)
+        
+        for i, d in enumerate(self.documents):
+            self.db.add(
+              documents=d,
+              ids=str(i)
+            )
+        return self.db
+   
+    def get_relevant_passage(self):
+      self.passage = self.db.query(query_texts=[self.query], n_results=1)['documents'][0][0]
+      return self.passage
+
+    def make_prompt(self):
+      escaped = self.passage.replace("'", "").replace('"', "").replace("\n", " ")
+      prompt = ("""You are a helpful and informative bot that answers questions using text from the reference passage included below.\
+      Be sure to respond in a complete sentence, being comprehensive, including all relevant background information.\
+      However, you are talking to a non-technical audience, so be sure to break down complicated concepts and\
+      strike a friendly and converstional tone.\
+      If the passage is irrelevant to the answer, you may ignore it.
+      QUESTION: '{query}'
+      PASSAGE: '{passage}'
+      ANSWER:
+      """).format(query=self.query, passage=escaped)
+
+      return prompt
+        
+    def log_chat_history(self,logpath):
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        log_filename = f"chat-log-{timestamp}.txt"
+        log_path = os.path.join(logpath, log_filename)
+
+        os.makedirs(logpath, exist_ok=True)
+
+        with open(log_path, "w") as f:
+            for message in self.chat_history:
+                f.write(f"{message}\n")
+        
+        print(f"chat log file: {log_path}")
+        
+    def ragchat(self):
+
+        self.db = self.create_chroma_db()
+
+        n=1 # input number
+        print("Welcome to Gemini RAG Chatbot ! ('/q' to exit)")
+        self.chat_history.append(f"Welcome to Gemini RAG Chatbot ! ('/q' to exit)")
+        print(f"Based on doc set of subject: '{self.subject}'\n")
+        self.chat_history.append(f"Based on doc set of subject: '{self.subject}'\n")
+        while True:
+            self.query = input(f"{n} You: ")
+
+            if not self.query:  # Check if input is empty (only Enter pressed)
+                continue  # Skip processing empty input
+            
+            self.chat_history.append(f"{n} You: {self.query}\n")
+                
+            if self.query.lower() == "/q":
+                self.log_chat_history('./log')
+                print("Chat history saved. Exiting.")
+                break
+            
+            self.passage = self.get_relevant_passage()
+
+            prompt = self.make_prompt()
+            print(f"prompt: {prompt}\n")
+
+            response = self.model.generate_content(prompt)
+            print(f"{n} RAG Chatbot: {response.text}")
+            self.chat_history.append(f"{n} RAG Chatbot: {response.text}")
+            n += 1
+
+if __name__ == "__main__":
+    ragchatbot = RAGChatBot()
+
+    #ragchatbot.model_name = "gemini-1.5-flash"
+    #ragchatbot.dbname = "geminidb"
+    DOCUMENT1 = "Gemini is the result of large-scale collaborative efforts by teams across Google, including our colleagues at Google Research. It was built from the ground up to be multimodal, which means it can generalize and seamlessly understand, operate across and combine different types of information including text, code, audio, image and video."
+    DOCUMENT2 = "We designed Gemini to be natively multimodal, pre-trained from the start on different modalities. Then we fine-tuned it with additional multimodal data to further refine its effectiveness. This helps Gemini seamlessly understand and reason about all kinds of inputs from the ground up, far better than existing multimodal models — and its capabilities are state of the art in nearly every domain."
+    DOCUMENT3 = "Gemini has the most comprehensive safety evaluations of any Google AI model to date, including for bias and toxicity. We’ve conducted novel research into potential risk areas like cyber-offense, persuasion and autonomy, and have applied Google Research’s best-in-class adversarial testing techniques to help identify critical safety issues in advance of Gemini’s deployment."
+    ragchatbot.documents = [DOCUMENT1, DOCUMENT2, DOCUMENT3]
+    ragchatbot.subject = 'Gemini intro'
+
+    ragchatbot.ragchat()
+```
+
+    Welcome to Gemini RAG Chatbot ! ('/q' to exit)
+    Based on doc set of subject: 'Gemini intro'
+    
+
+
+    1 You:  safety
+
+
+    prompt: You are a helpful and informative bot that answers questions using text from the reference passage included below.      Be sure to respond in a complete sentence, being comprehensive, including all relevant background information.      However, you are talking to a non-technical audience, so be sure to break down complicated concepts and      strike a friendly and converstional tone.      If the passage is irrelevant to the answer, you may ignore it.
+          QUESTION: 'safety'
+          PASSAGE: 'Gemini has the most comprehensive safety evaluations of any Google AI model to date, including for bias and toxicity. We’ve conducted novel research into potential risk areas like cyber-offense, persuasion and autonomy, and have applied Google Research’s best-in-class adversarial testing techniques to help identify critical safety issues in advance of Gemini’s deployment.'
+          ANSWER:
+          
+    
+    1 RAG Chatbot: Gemini has undergone extensive safety evaluations, more than any other Google AI model before it, to ensure its responsible use. 
+    
+
+
+    2 You:  /q
+
+
+    chat log file: ./log/chat-log-2024-08-25_00-13-03.txt
+    Chat history saved. Exiting.
 
 
 ## Conclusion
