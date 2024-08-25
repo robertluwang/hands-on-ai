@@ -48,77 +48,42 @@ class RAGChatBot:
         self.model = genai.GenerativeModel(self.model_name)
         self.chat_history = []
 
+        self.chroma_client = chromadb.Client() 
+
     def create_chroma_db(self):
-        """
-        Creates a ChromaDB collection, generates embeddings for the documents using the provided embedding function, and adds the documents and embeddings to the collection.
-
-        Args:
-            documents (list): A list of documents to be added to the collection.
-            name (str): The name of the collection.
-            embedding_function (EmbeddingFunction, optional): The function used to generate embeddings for the documents. Defaults to GeminiEmbeddingFunction().
-
-        Returns:
-            chromadb.Collection: The created ChromaDB collection.
-        """
-
-        chroma_client = chromadb.Client()
-        db = chroma_client.create_collection(name=self.dbname, embedding_function=self.embedding_function)
-
-        # Generate embeddings
-        embeddings = self.embedding_function(self.documents)
-        #print("Embeddings generated:", embeddings)
-
-        # Verify data types
-        if not isinstance(embeddings, list) or not all(isinstance(embedding, list) for embedding in embeddings):
-            raise ValueError("Embeddings must be a list of lists of numbers.")
-
-        if not all(isinstance(value, (int, float)) for embedding in embeddings for value in embedding):
-            raise ValueError("Embedding elements must be numerical.")
-
-        # Add documents and embeddings
-        try:
-            db.add(
-                documents=self.documents,
-                embeddings=embeddings,
-                ids=[str(i) for i in range(len(self.documents))]
-            )
-            #print("Documents and embeddings added successfully.")
-        except Exception as e:
-            print(f"Error adding documents and embeddings: {e}")
-
-        return db
-
-    def create_or_update_chroma_db(self):
-        client = chromadb.Client()
-
-        collections = client.list_collections()
+        collections = self.chroma_client.list_collections
         for collection_name in (collection.name for collection in collections()):
-            if self.dbname in collection_name:
-                print(f"Collection '{self.dbname}' exists.")
-                return client.get_collection(self.dbname)
-            else:
-                print(f"Collection '{self.dbname}' does not exist.")
-
-        print(f"Creating ChromaDB collection '{self.dbname}'...")
-        return self.create_chroma_db(self)
-    
+            if collection_name.strip() == self.dbname:
+                #print(f"Collection '{self.dbname}' exists, will remove it.")
+                self.chroma_client.delete_collection(name=self.dbname)
+        
+        self.db = self.chroma_client.create_collection(name=self.dbname, embedding_function=self.embedding_function)
+        
+        for i, d in enumerate(self.documents):
+            self.db.add(
+              documents=d,
+              ids=str(i)
+            )
+        return self.db
+   
     def get_relevant_passage(self):
-      passage = self.db.query(query_texts=[self.query], n_results=1)['documents'][0][0]
-      return passage
+      self.passage = self.db.query(query_texts=[self.query], n_results=1)['documents'][0][0]
+      return self.passage
 
-    def make_prompt(self,relevant_passage):
-      escaped = relevant_passage.replace("'", "").replace('"', "").replace("\n", " ")
+    def make_prompt(self):
+      escaped = self.passage.replace("'", "").replace('"', "").replace("\n", " ")
       prompt = ("""You are a helpful and informative bot that answers questions using text from the reference passage included below.\
       Be sure to respond in a complete sentence, being comprehensive, including all relevant background information.\
       However, you are talking to a non-technical audience, so be sure to break down complicated concepts and\
       strike a friendly and converstional tone.\
       If the passage is irrelevant to the answer, you may ignore it.
       QUESTION: '{query}'
-      PASSAGE: '{relevant_passage}'
+      PASSAGE: '{passage}'
       ANSWER:
-      """).format(query=self.query, relevant_passage=escaped)
+      """).format(query=self.query, passage=escaped)
 
       return prompt
+        
     def log_chat_history(self,logpath):
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         log_filename = f"chat-log-{timestamp}.txt"
@@ -131,6 +96,7 @@ class RAGChatBot:
                 f.write(f"{message}\n")
         
         print(f"chat log file: {log_path}")
+        
     def ragchat(self):
 
         self.db = self.create_chroma_db()
@@ -142,8 +108,12 @@ class RAGChatBot:
         self.chat_history.append(f"Based on doc set of subject: '{self.subject}'\n")
         while True:
             self.query = input(f"{n} You: ")
+
+            if not self.query:  # Check if input is empty (only Enter pressed)
+                continue  # Skip processing empty input
+            
             self.chat_history.append(f"{n} You: {self.query}\n")
-                      
+                
             if self.query.lower() == "/q":
                 self.log_chat_history('./log')
                 print("Chat history saved. Exiting.")
@@ -151,12 +121,12 @@ class RAGChatBot:
             
             self.passage = self.get_relevant_passage()
 
-            prompt = self.make_prompt(self.passage)
+            prompt = self.make_prompt()
             print(f"prompt: {prompt}\n")
 
             response = self.model.generate_content(prompt)
-            print(f"{n} Chatbot: {response.text}")
-            self.chat_history.append(f"{n} Chatbot: {response.text}")
+            print(f"{n} RAG Chatbot: {response.text}")
+            self.chat_history.append(f"{n} RAG Chatbot: {response.text}")
             n += 1
 
 if __name__ == "__main__":
@@ -171,5 +141,4 @@ if __name__ == "__main__":
     ragchatbot.subject = 'Gemini intro'
 
     ragchatbot.ragchat()
-
 
