@@ -89,14 +89,12 @@ documents = [DOCUMENT1, DOCUMENT2, DOCUMENT3]
 documents
 ```
 
-
-
-
+```
     ['Gemini is the result of large-scale collaborative efforts by teams across Google, including our colleagues at Google Research. It was built from the ground up to be multimodal, which means it can generalize and seamlessly understand, operate across and combine different types of information including text, code, audio, image and video.',
      'We designed Gemini to be natively multimodal, pre-trained from the start on different modalities. Then we fine-tuned it with additional multimodal data to further refine its effectiveness. This helps Gemini seamlessly understand and reason about all kinds of inputs from the ground up, far better than existing multimodal models — and its capabilities are state of the art in nearly every domain.',
      'Gemini has the most comprehensive safety evaluations of any Google AI model to date, including for bias and toxicity. We’ve conducted novel research into potential risk areas like cyber-offense, persuasion and autonomy, and have applied Google Research’s best-in-class adversarial testing techniques to help identify critical safety issues in advance of Gemini’s deployment.']
 
-
+```
 
 **Embeddings with model embedding-001**
 
@@ -173,21 +171,19 @@ collections = client.list_collections
 client.list_collections()
 ```
 
-
-
-
+```
     [Collection(name=geminidb)]
 
-
+```
 
 
 ```python
 for collection_name in (collection.name for collection in collections()):
     print(collection_name.strip())
 ```
-
+```
     geminidb
-
+```
 
 
 ```python
@@ -198,21 +194,16 @@ for collection_name in (collection.name for collection in collections()):
     else:
         print("Collection 'geminidb' does not exist.")
 ```
-
+```
     Collection 'geminidb' exists, will remove it.
-
-
+```
 
 ```python
 client.list_collections()
 ```
-
-
-
-
+```
     []
-
-
+```
 
 
 ```python
@@ -278,13 +269,9 @@ def get_relevant_passage(query, db):
 passage = get_relevant_passage("safety", db)
 Markdown(passage)
 ```
-
-
-
-
+```
 Gemini has the most comprehensive safety evaluations of any Google AI model to date, including for bias and toxicity. We’ve conducted novel research into potential risk areas like cyber-offense, persuasion and autonomy, and have applied Google Research’s best-in-class adversarial testing techniques to help identify critical safety issues in advance of Gemini’s deployment.
-
-
+```
 
 **Make a prompt**
 
@@ -314,18 +301,13 @@ query = "what is safety evaluations for gemini?"
 prompt = make_prompt(query, passage)
 Markdown(prompt)
 ```
-
-
-
-
+```
 You are a helpful and informative bot that answers questions using text from the reference passage included below.   Be sure to respond in a complete sentence, being comprehensive, including all relevant background information.   However, you are talking to a non-technical audience, so be sure to break down complicated concepts and   strike a friendly and converstional tone.   If the passage is irrelevant to the answer, you may ignore it.
   QUESTION: 'what is safety evaluations for gemini?'
   PASSAGE: 'Gemini has the most comprehensive safety evaluations of any Google AI model to date, including for bias and toxicity. We’ve conducted novel research into potential risk areas like cyber-offense, persuasion and autonomy, and have applied Google Research’s best-in-class adversarial testing techniques to help identify critical safety issues in advance of Gemini’s deployment.'
 
     ANSWER:
-  
-
-
+```
 
 **Generate a response**
 
@@ -335,13 +317,9 @@ model = genai.GenerativeModel('gemini-pro')
 answer = model.generate_content(prompt)
 Markdown(answer.text)
 ```
-
-
-
-
+```
 Gemini, a Google AI model, has undergone rigorous safety evaluations to ensure its responsible use. These evaluations encompass a wide range of potential risks, such as bias, toxicity, and even the possibility of misuse for offensive or manipulative purposes. To mitigate these risks, Google Research has employed advanced adversarial testing techniques to identify and address critical safety issues before Gemini's deployment.
-
-
+```
 
 ## Build RAG chatbot using Chroma - wraping to class for easy integration 
 
@@ -513,11 +491,10 @@ if __name__ == "__main__":
 
     ragchatbot.ragchat()
 ```
-
+```
     Welcome to Gemini RAG Chatbot ! ('/q' to exit)
     Based on doc set of subject: 'Gemini intro'
     
-
 
     1 You:  safety
 
@@ -531,13 +508,12 @@ if __name__ == "__main__":
     1 RAG Chatbot: Gemini has undergone extensive safety evaluations, more than any other Google AI model before it, to ensure its responsible use. 
     
 
-
     2 You:  /q
 
 
     chat log file: ./log/chat-log-2024-08-25_00-13-03.txt
     Chat history saved. Exiting.
-
+```
 
 ## Conclusion
 
